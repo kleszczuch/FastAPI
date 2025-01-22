@@ -30,7 +30,7 @@ class TasksOperations:
     def update_task(self, id: int, upd_task: Task) -> Union[Task, None]:
         for i, t in enumerate(self.storage):
             if t.id == id:
-                upd_task.id = id  # Ensure the updated task retains the same ID
+                upd_task.id = id 
                 self.storage[i] = upd_task
                 return upd_task
         return None
