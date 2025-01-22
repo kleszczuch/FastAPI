@@ -1,15 +1,12 @@
-from fastapi import APIRouter,HTTPException
+from fastapi import APIRouter, HTTPException
 from src.common.models import State, Task
-from src.modules.task_operations import TasksOperations, TasksOperationsDep
-
+from src.modules.task_operations import TasksOperationsDep
 
 router = APIRouter(prefix="/tasks")
-
 
 @router.get("/")
 async def get_task(
     task_operations: TasksOperationsDep, 
-    TasksOperationsDep, 
     status: State | None = None
     ) -> list[Task]:
 
@@ -17,13 +14,11 @@ async def get_task(
         return task_operations.get_task_by_status(status)
     return task_operations.get_tasks()
 
-
 @router.get("/{id}")
 async def get_task_by_id(
     task_operations: TasksOperationsDep, 
-    TasksOperationsDep, 
-    status: State | None = None
-    ) -> list[Task]:
+    id: int
+    ) -> Task:
 
     task: Task = task_operations.get_task(id)
     if task is None:
@@ -37,7 +32,6 @@ async def add_task(
 
     return task_operations.add_task(task)
 
-
 @router.put("/{id}")
 async def update_task(
     task_operations: TasksOperationsDep,
@@ -48,10 +42,8 @@ async def update_task(
         raise HTTPException(status_code=404, detail=f"Task with id {id} not found")
     return task
 
-
 @router.delete("/{id}")
 async def delete_task(
     task_operations: TasksOperationsDep,
     id: int):
-
     task_operations.delete_task(id)
